@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Common\Singleton\Singleton.cs" />
+     <Compile Include="Assets\Scripts\Common\Singleton\SingletonException.cs" />
      <Compile Include="Assets\Scripts\FrameWork\BaseObject\BaseUI.cs" />
      <Compile Include="Assets\Scripts\FrameWork\Defines\Defines.cs" />
      <Compile Include="Assets\Scripts\FrameWork\Manager\ResManager.cs" />
