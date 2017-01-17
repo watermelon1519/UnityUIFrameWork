@@ -9,7 +9,7 @@ public class StartGame : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ResManager.Instance.Test ();
-		UIManager.Instance.Init ();
+		//UIManager.Instance;
 
 
        // GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Prefebs/TestOne"));
