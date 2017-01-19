@@ -67,10 +67,53 @@ namespace SnowFrameWork
 				throw new Exception ("_dicOpenUIs TryGetValue Failure! _uiType: " + _uiType.ToString);
 			return _retObj;
 		}
-
-		public void OpenUI ( bool _isCloseOhter, EnumUIType[] _uiTypes, params ) 
+		public void OpenUI( EnumUIType[] _uiTypes )
 		{
-			
+			OpenUI (false, _uiTypes, null);
 		}
+		public void OpenUI( EnumUIType _uiType , params object[] _uiParams)
+		{
+			EnumUIType[] _uiTypes = new EnumUIType[1];
+			_uiTypes [0] = _uiType;
+			OpenUI (false, _uiTypes, _uiParams);
+		}
+		public void OpenUICloseOthers( EnumUIType[] _uiTypes )
+		{
+			OpenUI (true, _uiTypes, null);
+		}
+		public void OpenUICloseOthers( EnumUIType _uiType , params object[] _uiParams )
+		{
+			EnumUIType[] _uiTypes = new EnumUIType[1];
+			_uiTypes [0] = _uiType;
+			OpenUI (true, _uiTypes, _uiParams);
+		}
+		/// <summary>
+		/// Opens the U.
+		/// </summary>
+		/// <param name="_isCloseOther">If set to <c>true</c> is close other.</param>
+		/// <param name="_uiTypes">User interface types.</param>
+		/// <param name="_uiParams">User interface parameters.</param>
+		public void OpenUI ( bool _isCloseOther, EnumUIType[] _uiTypes, params object[] _uiParams) 
+		{
+			// Close Others UI
+			if (_isCloseOther) {
+				
+			}
+
+			// Push _uiTypes
+			for (int i = 0; i < _uiTypes.Length; i++) {
+				EnumUIType _uiType = _uiTypes [i];
+				if( !dicOpenUIs.ContainsKey(_uiType ))
+				{
+					string _path = UIPathDefines.GetPrefabsPathByType(_uiType);
+					stackOpenUIs.Push (new UIInfoData (_uiType, _path, _uiParams));
+				}
+			}
+				
+			if (stackOpenUIs.Count > 0) {
+				
+			}
+		}
+
     }
 }
