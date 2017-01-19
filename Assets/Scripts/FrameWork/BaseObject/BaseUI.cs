@@ -85,7 +85,7 @@ namespace SnowFrameWork{
 			}
 		}
 
-		void Release(){
+		public void Release(){
 			this.State = EnumObjectState.Closing;
 			GameObject.Destroy (this.CacheGameObject);
 			OnRelease ();

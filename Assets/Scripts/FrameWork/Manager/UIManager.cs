@@ -97,7 +97,7 @@ namespace SnowFrameWork
 		{
 			// Close Others UI
 			if (_isCloseOther) {
-				
+				CloseUIAll ();	
 			}
 
 			// Push _uiTypes
@@ -111,9 +111,86 @@ namespace SnowFrameWork
 			}
 				
 			if (stackOpenUIs.Count > 0) {
-				
+				CoroutineController.Instance.StartCoroutine (AsyncLoadData ());	
 			}
 		}
 
+		// load UI Async
+		private IEnumerator<int> AsyncLoadData()
+		{
+			UIInfoData _uiInfoData = null;
+			UnityEngine.Object _prefabObj = null;
+			GameObject _uiObject = null;
+			if (stackOpenUIs != null && stackOpenUIs.Count > 0) {
+				do {
+					_uiInfoData = stackOpenUIs.Pop ();
+
+					_prefabObj = Resources.Load (_uiInfoData.Path);
+					if (_prefabObj != null) {
+						_uiObject = MonoBehaviour.Instantiate (_prefabObj) as GameObject;
+						BaseUI _baseUI = _uiObject.GetComponent< BaseUI> ();
+						if (null != _baseUI) {
+							_baseUI.SetUIWhenOpening (_uiInfoData.UIparams);
+						}
+						dicOpenUIs.Add (_uiInfoData.UIType, _uiObject);
+					}
+
+				} while(stackOpenUIs.Count > 0);
+			}
+			yield return 0;
+
+		}
+
+		public void CloseUIAll()
+		{
+			List<EnumUIType> _listKey = new List<EnumUIType> (dicOpenUIs.Keys) ;
+//			for (int i = 0; i < _listKey.Count; i++) {
+//				CloseUI (_listKey [i]);
+//			}
+			CloseUI (_listKey.ToArray ());
+			dicOpenUIs.Clear ();
+		}
+
+		public void CloseUI( EnumUIType[] _uiTypes)
+		{
+			for (int i = 0; i < _uiTypes.Length ; i++) {
+				CloseUI (_uiTypes [i]);
+			}
+		}
+		/// <summary>
+		/// Closes the U.
+		/// </summary>
+		/// <param name="_uiType">User interface type.</param>
+		public void CloseUI(EnumUIType _uiType)
+		{
+			GameObject _uiObj = GetUIObject (_uiType);
+			if (null == _uiObj) {
+				dicOpenUIs.Remove (_uiType);
+			} else {
+				BaseUI _baseUI = _uiObj.GetComponent<BaseUI> ();
+				if (null == _baseUI) {
+					GameObject.Destroy (_uiObj);
+					dicOpenUIs.Remove (_uiType);
+				} else {
+					_baseUI.StateChanged += CloseUIHandle;
+					_baseUI.Release ();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Closes the user interface handle.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="newState">New state.</param>
+		/// <param name="oldState">Old state.</param>
+		private void CloseUIHandle( object sender, EnumObjectState newState, EnumObjectState oldState)
+		{
+			if (newState == EnumObjectState.Closing) {
+				BaseUI _baseUI = sender as BaseUI;
+				dicOpenUIs.Remove (_baseUI.GetUIType ());
+				_baseUI.StateChanged -= CloseUIHandle;
+			}
+		}
     }
 }
