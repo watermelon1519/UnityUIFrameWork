@@ -80,7 +80,7 @@ namespace SnowFrameWork{
 		}
 		// Update is called once per frame
 		void Update () {
-			if (this._state == EnumObjectState.Ready) {
+			if (this.State == EnumObjectState.Ready) {
 				OnUpdate (Time.deltaTime);
 			}
 		}
@@ -125,10 +125,11 @@ namespace SnowFrameWork{
 		public void SetUIWhenOpening( params object[] uiParams)
 		{
 			SetUI (uiParams);
-			StartCoroutine (LoadDataAsyn ());
+			//StartCoroutine (LoadDataAsyn ());
+			CoroutineController.Instance.StartCoroutine( AsyncOnLoadData());
 		}
-
-		private IEnumerator LoadDataAsyn()
+			
+		private IEnumerator AsyncOnLoadData()
 		{
 			yield return new WaitForSeconds (0);
 			if (this.State == EnumObjectState.Loading) {

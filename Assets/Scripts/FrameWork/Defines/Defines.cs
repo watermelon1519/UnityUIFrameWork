@@ -7,7 +7,7 @@ namespace SnowFrameWork
 	/// <summary>
 	/// State change event.
 	/// </summary>
-	public delegate void StateChangeEvent( Object ui, EnumObjectState newState, EnumObjectState oldState);
+	public delegate void StateChangeEvent( object ui, EnumObjectState newState, EnumObjectState oldState);
 
 	#endregion
 
@@ -61,7 +61,7 @@ namespace SnowFrameWork
 
 		public static string GetPrefabsPathByType( EnumUIType _uiType )
 		{
-			string _path = string.Empty ();
+			string _path = string.Empty;
 			switch (_uiType ){
 			case EnumUIType.TestOne:
 				_path = UI_PREFAB + "TestOne";
@@ -74,6 +74,25 @@ namespace SnowFrameWork
 				break;
 			}
 			return _path;
+		}
+
+		public static System.Type GetUIScriptByType( EnumUIType _uiType)
+		{
+			System.Type _scriptType = null;
+			switch (_uiType) {
+
+			case EnumUIType.TestOne:
+				_scriptType = typeof(TestOne);
+				break;
+			case EnumUIType.TestTwo:
+				_scriptType = typeof(TestTwo);
+				break;
+			default:
+				Debug.Log ("Not Find EnumUIType! type:" + _uiType.ToString ());
+				break;
+
+			}
+			return _scriptType;
 		}
 
 	}

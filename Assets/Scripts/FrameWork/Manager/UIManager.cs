@@ -9,7 +9,7 @@ namespace SnowFrameWork
 		/// <summary>
 		/// User interface info data.
 		/// </summary>
-		class UIInfoData
+		public class UIInfoData
 		{
 			/// <summary>
 			/// Gets the type of the user interface.
@@ -18,12 +18,14 @@ namespace SnowFrameWork
 			public EnumUIType UIType{ get; private set; }
 			public string Path{ get; private set; }
 			public object[]  UIparams{ get; private set; }
+			public Type ScriptType{ get; private set; }
 
-			UIInfoData( EnumUIType _uiType, string _path, params object[] _uiParams )
+			public UIInfoData( EnumUIType _uiType, string _path, params object[] _uiParams )
 			{
 				UIType = _uiType;
 				Path = _path;
 				UIparams = _uiParams;
+				this.ScriptType = UIPathDefines.GetUIScriptByType(this.UIType);
 			}
 		}
 		/// <summary>
@@ -54,7 +56,7 @@ namespace SnowFrameWork
 				return _retObj.GetComponent<T> ();
 			return null;
 		}
-
+			
 		/// <summary>
 		/// Gets the user interface object.
 		/// </summary>
@@ -63,10 +65,17 @@ namespace SnowFrameWork
 		public GameObject GetUIObject (EnumUIType _uiType)
 		{
 			GameObject _retObj = null;
-			if (!dicOpenUIs.TryGetValue (_uiType, _retObj))
-				throw new Exception ("_dicOpenUIs TryGetValue Failure! _uiType: " + _uiType.ToString);
+			if (!dicOpenUIs.TryGetValue (_uiType, out _retObj))
+				throw new Exception ("_dicOpenUIs TryGetValue Failure! _uiType: " + _uiType.ToString());
 			return _retObj;
 		}
+
+		public void PreloadUI( EnumUIType _uiType )
+		{
+			string path = UIPathDefines.GetPrefabsPathByType (_uiType);
+			Resources.Load (path);
+		}
+
 		public void OpenUI( EnumUIType[] _uiTypes )
 		{
 			OpenUI (false, _uiTypes, null);
@@ -103,6 +112,9 @@ namespace SnowFrameWork
 			// Push _uiTypes
 			for (int i = 0; i < _uiTypes.Length; i++) {
 				EnumUIType _uiType = _uiTypes [i];
+
+				//如果已经打开过了，就不再打开
+				//只有通过CloseUI()关闭才会从字典中删除数据，否则会出问题。
 				if( !dicOpenUIs.ContainsKey(_uiType ))
 				{
 					string _path = UIPathDefines.GetPrefabsPathByType(_uiType);
@@ -129,6 +141,9 @@ namespace SnowFrameWork
 					if (_prefabObj != null) {
 						_uiObject = MonoBehaviour.Instantiate (_prefabObj) as GameObject;
 						BaseUI _baseUI = _uiObject.GetComponent< BaseUI> ();
+						if (null ==_baseUI){
+							_baseUI = _uiObject.AddComponent(_uiInfoData.ScriptType) as BaseUI;
+						}
 						if (null != _baseUI) {
 							_baseUI.SetUIWhenOpening (_uiInfoData.UIparams);
 						}
