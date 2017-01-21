@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//DDOL == Dont Destory On Load
 public abstract class DDOLSingleton<T> : MonoBehaviour where T: Component
 {
 	protected static T _instance = null;

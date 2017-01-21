@@ -49,6 +49,12 @@ namespace SnowFrameWork
 			stackOpenUIs = new Stack<UIInfoData> ();
 		}
 			
+		/// <summary>
+		///  return the component("Script") attached on the UI Object ( Script is inherit BaseUI)
+		/// </summary>
+		/// <returns>The U.</returns>
+		/// <param name="_uiType">User interface type.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public T GetUI<T>( EnumUIType _uiType) where T : BaseUI
 		{
 			GameObject _retObj = GetUIObject (_uiType); 
