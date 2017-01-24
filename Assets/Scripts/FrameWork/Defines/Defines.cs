@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace SnowFrameWork
 {
@@ -6,7 +7,7 @@ namespace SnowFrameWork
 	/// <summary>
 	/// State change event.
 	/// </summary>
-	public delegate void StateChangeEvent( Object ui, EnumObjectState newState, EnumObjectState oldState);
+	public delegate void StateChangeEvent( object ui, EnumObjectState newState, EnumObjectState oldState);
 
 	#endregion
 
@@ -36,6 +37,65 @@ namespace SnowFrameWork
 	}
 	#endregion
 
+	public class UIPathDefines
+	{
+		/// <summary>
+		/// UI预设
+		/// </summary>
+		public const string UI_PREFAB = "Prefabs/";
+
+		/// <summary>
+		/// UI小控件预设
+		/// </summary>
+		public const string UI_CONTROLS_PREFAB = "Prefabs/Control/";
+
+		/// <summary>
+		/// UI子页面预设
+		/// </summary>
+		public const string UI_SUBUI_PREFAB = "Prefabs/SubUI/";
+
+		/// <summary>
+		/// icon路径
+		/// </summary>
+		public const string UI_ICON_PATH = "UI/Icon/";
+
+		public static string GetPrefabsPathByType( EnumUIType _uiType )
+		{
+			string _path = string.Empty;
+			switch (_uiType ){
+			case EnumUIType.TestOne:
+				_path = UI_PREFAB + "TestOne";
+				break;
+			case EnumUIType.TestTwo:
+				_path = UI_PREFAB + "TestTwo";
+				break;
+			default:
+				Debug.Log ("Not Find EnumUIType! type:" + _uiType.ToString() );
+				break;
+			}
+			return _path;
+		}
+
+		public static System.Type GetUIScriptByType( EnumUIType _uiType)
+		{
+			System.Type _scriptType = null;
+			switch (_uiType) {
+
+			case EnumUIType.TestOne:
+				_scriptType = typeof(TestOne);
+				break;
+			case EnumUIType.TestTwo:
+				_scriptType = typeof(TestTwo);
+				break;
+			default:
+				Debug.Log ("Not Find EnumUIType! type:" + _uiType.ToString ());
+				break;
+
+			}
+			return _scriptType;
+		}
+
+	}
 	public class Defines
 	{
 		public Defines ()
