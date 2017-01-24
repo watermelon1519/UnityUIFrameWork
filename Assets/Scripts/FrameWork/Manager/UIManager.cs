@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace SnowFrameWork
 { 
+	//感觉像是享元模式，已经打开的UI就是共享的单元。
 	public class UIManager : Singleton<UIManager>  
 	{
 		/// <summary>
