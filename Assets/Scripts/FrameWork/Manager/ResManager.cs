@@ -43,11 +43,9 @@ namespace SnowFrameWork
 					_ResourcesLoad();
 					yield return null;
 				}
-				else
-				{
-					if (null != _loaded)
-						_loaded(_Object);
-				}
+				if (null != _loaded)
+					_loaded(_Object);
+	
 				yield break;
 			}
 
@@ -275,7 +273,7 @@ namespace SnowFrameWork
 			if (null != _obj)
 			{
 				_retObj = MonoBehaviour.Instantiate(_obj); //_obj是资源Object，是内存里的资源，没有被实例化的
-				if (null != _retObj)
+				//if (null != _retObj)
 				if (null != _retObj)
 				{
 					if (null != _loaded)

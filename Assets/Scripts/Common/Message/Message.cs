@@ -110,6 +110,30 @@ namespace SnowFrameWork
 			}
 		}
 		#endregion
+
+		#region Add & remove
+		public void Add( string key, object value)
+		{
+			this [key] = value;
+		}
+
+		public void Remove( string key)
+		{
+			if( null != dicDatas && dicDatas.ContainsKey(key))
+			{
+				dicDatas.Remove(key);
+			}
+		}
+
+		#endregion
+
+		#region Send
+		public void Send()
+		{
+			//MessageCenter Send Message
+			MessageCenter.Instance.SendMessage(this);
+		}
+		#endregion
 	}
 }
 
