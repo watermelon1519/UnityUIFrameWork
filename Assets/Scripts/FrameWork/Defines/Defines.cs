@@ -9,6 +9,10 @@ namespace SnowFrameWork
 	/// </summary>
 	public delegate void StateChangeEvent( object ui, EnumObjectState newState, EnumObjectState oldState);
 
+	public delegate void MessageEvent(Message msg);
+
+	public delegate void OnTouchEventHandle( GameObject sender , object _args, params object[] _params);  //object _param1 , object _param2
+
 	#endregion
 
 
@@ -34,6 +38,23 @@ namespace SnowFrameWork
 		None = -1,
 		TestOne = 0,
 		TestTwo = 1,
+	}
+
+	public enum EnumTouchEventType
+	{
+		OnClick,
+		OnDoubleClick,		
+		onDown,
+		onExit,
+		onUp,
+		onSelect,
+		onUpdateSelect,
+		onDeSelect,
+		onDrag,
+		onDragEnd,
+		onDrop,
+		onScroll,
+		onMove,
 	}
 	#endregion
 

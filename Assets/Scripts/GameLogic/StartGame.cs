@@ -20,35 +20,48 @@ public class StartGame : MonoBehaviour {
 //            tt = go.AddComponent<TestOne>();
 //        }
 
-		//UIManager.Instance.OpenUI (EnumUIType.TestOne);
-
-		float tm = System.Environment.TickCount;
-		for (int i = 0; i < 10000; i++) {
-			GameObject go = null;
-
-			//plan1 
-//			go = Instantiate (Resources.Load<GameObject> ("Prefabs/Cube"));
-//			go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
-
-			// plan 2
-			//go = ResManager.Instance.LoadInstance( "Prefabs/Cube" ) as GameObject;
-			//go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
-
-			//plan3 
-			//GameObject go = new GameObject();
-//			ResManager.Instance.LoadAsyncInstance ("Prefabs/Cube", (_obj) => {
+		UIManager.Instance.OpenUI (EnumUIType.TestOne);
+//
+//		float tm = System.Environment.TickCount;
+//		for (int i = 0; i < 10000; i++) {
+//			GameObject go = null;
+//
+//			//plan1 
+////			go = Instantiate (Resources.Load<GameObject> ("Prefabs/Cube"));
+////			go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
+//
+//			// plan 2
+//			//go = ResManager.Instance.LoadInstance( "Prefabs/Cube" ) as GameObject;
+//			//go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
+//
+//			//plan3 
+//			//GameObject go = new GameObject();
+////			ResManager.Instance.LoadAsyncInstance ("Prefabs/Cube", (_obj) => {
+////				go = _obj as GameObject; 
+////				go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
+////			});
+//
+//			//plan4
+//			ResManager.Instance.LoadCoroutineInstance("Prefabs/Cube", (_obj) => {
 //				go = _obj as GameObject; 
 //				go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
 //			});
+//
+//		}
+//		Debug.Log("Times:" + ( System.Environment.TickCount - tm ) * 1000);
 
-			//plan4
-			ResManager.Instance.LoadCoroutineInstance("Prefabs/Cube", (_obj) => {
-				go = _obj as GameObject; 
-				go.transform.position = UnityEngine.Random.insideUnitSphere * 10;
-			});
+		StartCoroutine (AutoUpdateGold ());
+	}
 
+	private IEnumerator AutoUpdateGold()
+	{
+		int gold = 0;
+		while (true) {
+			gold++;
+			yield return new WaitForSeconds(1.0f);
+			Message message = new Message ("AutoUpdateGold", this);
+			message ["gold"] = gold;
+			message.Send ();
 		}
-		Debug.Log("Times:" + ( System.Environment.TickCount - tm ) * 1000);
-    }
-
+	}
 }
