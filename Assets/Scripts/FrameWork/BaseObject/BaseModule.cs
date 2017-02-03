@@ -62,7 +62,8 @@ namespace SnowFrameWork
 			State = EnumObjectState.Loading;
 			//...
 			if( registerMode == EnumRegisterMode.AutoRegister){
-				//register	
+				//register
+				ModuleManager.Instance.Register(this);
 				registerMode = EnumRegisterMode.AlreadyRegister;
 			}
 
@@ -81,12 +82,13 @@ namespace SnowFrameWork
 				//...
 				if (HasRegister) {
 					//unregister
+					ModuleManager.Instance.UnRegister(this);
 					registerMode = EnumRegisterMode.NotRegister;
 				}
 				OnRelease();
 			}
 		}
-		protected void OnRelease()
+		protected virtual void OnRelease()
 		{
 			
 		}

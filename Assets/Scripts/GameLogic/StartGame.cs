@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using SnowFrameWork;
+using System;
 
 public class StartGame : MonoBehaviour {
 
@@ -19,7 +20,7 @@ public class StartGame : MonoBehaviour {
 //        {
 //            tt = go.AddComponent<TestOne>();
 //        }
-
+		RegisterAllModules();
 		UIManager.Instance.OpenUI (EnumUIType.TestOne);
 //
 //		float tm = System.Environment.TickCount;
@@ -53,13 +54,28 @@ public class StartGame : MonoBehaviour {
 		StartCoroutine (AutoUpdateGold ());
 	}
 
+	private void RegisterAllModules()
+	{
+//		TestOneModule testOneModule = new TestOneModule ();
+//		testOneModule.Load ();
+		LoadModule( typeof(TestOneModule) );
+		//....
+	}
+	private void LoadModule( Type moduleType ) 
+	{
+		BaseModule bm = System.Activator.CreateInstance (moduleType) as BaseModule;
+		bm.Load ();
+	}
+
+	//simulate server message
 	private IEnumerator AutoUpdateGold()
 	{
 		int gold = 0;
 		while (true) {
 			gold++;
 			yield return new WaitForSeconds(1.0f);
-			Message message = new Message ("AutoUpdateGold", this);
+			//MessageCenter.Instance.SendMessage (MessageType.Net_MessageTestOne, this, null, gold);
+			Message message = new Message (MessageType.Net_MessageTestOne, this);
 			message ["gold"] = gold;
 			message.Send ();
 		}

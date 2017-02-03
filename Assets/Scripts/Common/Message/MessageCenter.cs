@@ -60,6 +60,19 @@ namespace SnowFrameWork
 
 		#region SendMessage()
 
+		public void SendMessage( MessageType messageType, object sender)
+		{
+			SendMessage( new Message( messageType.ToString(), sender) );
+		}
+		public void SendMessage( MessageType messageType, object sender, object content)
+		{
+			SendMessage( new Message( messageType.ToString(), sender , content) );
+		}
+		public void SendMessage( MessageType messageType, object sender, object content, params object[] dicParams)
+		{
+			SendMessage( new Message( messageType.ToString(), sender, content, dicParams) );
+		}
+
 		public void SendMessage( Message message)
 		{
 			DoMessageDispatcher (message);

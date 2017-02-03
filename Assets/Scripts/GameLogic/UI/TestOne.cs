@@ -7,6 +7,7 @@ using SnowFrameWork;
 
 public class TestOne : BaseUI {
 
+	private TestOneModule oneModule;
     private Button btn;
 	private Text text;
 
@@ -21,6 +22,8 @@ public class TestOne : BaseUI {
 	void Start () {
 //        btn = transform.Find("Panel/Button").GetComponent<Button>();
 //        btn.onClick.AddListener(OnClickBtn);
+
+
 		text = transform.Find("Panel/Text").GetComponent<Text>();
 
 		//EventTriggerListener.Get (transform.Find ("Panel/Button").gameObject).SetEventHandle (EnumTouchEventType.OnClick, Close);
@@ -28,12 +31,16 @@ public class TestOne : BaseUI {
 		EventTriggerListener listener = EventTriggerListener.Get (transform.Find ("Panel/Button").gameObject);
 		listener.SetEventHandle (EnumTouchEventType.OnClick, Close, 1, "1234");
 
+		oneModule = ModuleManager.Instance.Get<TestOneModule> ();
+		text.text = "Gold:" + oneModule.Gold;
 	}
 
 	protected override void OnAwake ()
 	{
+		
 		MessageCenter.Instance.AddListener ("AutoUpdateGold", UpdateGold);
 		//MessageCenter.Instance.AddListener ("AutoUpdateGold", UpdateGold);
+
 		base.OnAwake ();
 	}
 	protected override void OnRelease()
